@@ -4,6 +4,8 @@ class BooksController < ApplicationController
   def show
     @book = Book.find(params[:id])
     @book_new = Book.new
+    @book_comment = BookComment.new
+    @book_comments = @book.book_comments
   end
 
   def index
@@ -18,7 +20,6 @@ class BooksController < ApplicationController
       redirect_to book_path(@book), notice: "You have created book successfully."
     else
       @books = Book.all
-      
       render 'index'
     end
   end
@@ -47,6 +48,7 @@ class BooksController < ApplicationController
   def book_params
     params.require(:book).permit(:title, :body)
   end
+  
   def ensure_correct_user
     @book = Book.find(params[:id])
     unless @book.user == current_user
