@@ -10,7 +10,15 @@ class BooksController < ApplicationController
 
   def index
     @book = Book.new
+    if params[:latest]
+      @books = Book.latest
+    elsif params[:old]
+      @books = Book.old
+    elsif params[:star_count]
+      @books = Book.star_count
+    else
     @books = Book.all
+    end
   end
 
   def create
@@ -46,7 +54,7 @@ class BooksController < ApplicationController
   private
 
   def book_params
-    params.require(:book).permit(:title, :body)
+    params.require(:book).permit(:title, :body, :star, :category)
   end
   
   def ensure_correct_user
